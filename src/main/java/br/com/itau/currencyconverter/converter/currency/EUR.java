@@ -2,7 +2,7 @@ package br.com.itau.currencyconverter.converter.currency;
 
 import java.math.BigDecimal;
 
-public final class EuroCurrency extends CurrencyWithIofTaxableAndOperationalTaxable {
+public final class EUR extends CurrencyWithIofTaxableAndOperationalTaxable {
     private final BigDecimal CONVERT_PRICE = new BigDecimal("0.20");
     private final BigDecimal FIX_TAX = new BigDecimal("6.00");
 

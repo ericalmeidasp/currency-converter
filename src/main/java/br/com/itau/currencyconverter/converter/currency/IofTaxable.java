@@ -1,4 +1,4 @@
-package br.com.itau.currencyconverter.converter;
+package br.com.itau.currencyconverter.converter.currency;
 
 import java.math.BigDecimal;
 

@@ -1,7 +1,5 @@
 package br.com.itau.currencyconverter.converter.currency;
 
-import br.com.itau.currencyconverter.converter.Convertable;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -11,10 +9,10 @@ public class CurrencyFactory {
 
     public CurrencyFactory() {
         this.convertableMap = new HashMap<>();
-        this.convertableMap.put("USD", new DollarCurrency());
-        this.convertableMap.put("EUR", new EuroCurrency());
-        this.convertableMap.put("ARS", new ArgentinePesoCurrency());
-        this.convertableMap.put("CLP", new ChileanPesoCurrency());
+        this.convertableMap.put("1", new EUR());
+        this.convertableMap.put("2", new USD());
+        this.convertableMap.put("3", new ARS());
+        this.convertableMap.put("4", new CLP());
     }
 
     public Optional<CurrencyWithIofTaxableAndOperationalTaxable> create(String currency) {

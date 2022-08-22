@@ -2,10 +2,10 @@ package br.com.itau.currencyconverter.converter.currency;
 
 import java.math.BigDecimal;
 
-public final class ArgentinePesoCurrency extends CurrencyWithIofTaxableAndOperationalTaxable {
-    private final BigDecimal CONVERT_PRICE = new BigDecimal("26.24");
-    private final BigDecimal FIX_TAX = new BigDecimal("2.50");
-    private final BigDecimal PERCENTAGE_TAX_IN_DECIMAL = new BigDecimal("0.015");
+public final class USD extends CurrencyWithIofTaxableAndOperationalTaxable {
+    private final BigDecimal CONVERT_PRICE = new BigDecimal("0.19");
+    private final BigDecimal FIX_TAX = new BigDecimal("5.00");
+    private final BigDecimal PERCENTAGE_TAX_IN_DECIMAL = new BigDecimal("0.03");
 
     @Override
     public BigDecimal doConvert(BigDecimal value) {
