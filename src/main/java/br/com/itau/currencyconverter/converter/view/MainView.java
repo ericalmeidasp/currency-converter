@@ -12,7 +12,7 @@ import java.util.Optional;
 public class MainView {
 
     public void mainMenuCurrencyConverter() {
-        int opcaoSelecionada;
+        int opcaoSelecionada = -1;
         do {
             InputData inputData = new KeyboardEntry();
 
@@ -23,8 +23,7 @@ public class MainView {
             try {
                 opcaoSelecionada = inputData.intEntry();
             } catch (Exception ex) {
-                System.out.println("Digite apenas numeros inteiros\n");
-                opcaoSelecionada = -1;
+                System.out.println(ex.getLocalizedMessage());
             }
 
             switch (opcaoSelecionada) {
@@ -32,7 +31,11 @@ public class MainView {
                     System.out.println("Obrigado por utilizar o conversor.");
                     break;
                 case 1:
-                    currencyMenuConverter();
+                    try {
+                        currencyMenuConverter();
+                    } catch (IllegalArgumentException ex) {
+                        System.out.printf("%s%n%n", ex.getLocalizedMessage());
+                    }
                     break;
                 default:
                     System.out.println("Opção inválida, tente novamente\n");
@@ -42,51 +45,29 @@ public class MainView {
     }
 
     private void currencyMenuConverter() {
-
-        BigDecimal valueForConvert;
-        String currencyCode;
-
-        try {
-            valueForConvert = retrieveValueforConvert();
-            currencyCode = retrieveCurrencyCodeForConvert();
-        } catch (IllegalArgumentException ex) {
-            System.out.println(ex.getLocalizedMessage());
-            return;
-        }
+        BigDecimal valueForConvert = retrieveValueforConvert();
+        String currencyCode = retrieveCurrencyCodeForConvert();
 
         Optional<Convertable> converter = new CurrencyFactory().create(currencyCode);
 
-        if (converter.isEmpty()) {
-            System.out.println("Moeda não disponivel\n\n");
-            return;
-        }
-
-        try {
+        if (converter.isPresent()) {
             printResultOfConvertion(converter.get(), valueForConvert);
-        } catch (IllegalArgumentException ex) {
-            System.out.printf("%s%n%n", ex.getLocalizedMessage());
+        } else {
+            throw new IllegalArgumentException("Moeda não disponível");
         }
     }
 
     private BigDecimal retrieveValueforConvert() {
         InputData inputData = new KeyboardEntry();
-        try {
-            System.out.print("\nDigite o valor em reais (R$): ");
-            double entry = inputData.doubleEntry();
-            return BigDecimal.valueOf(entry);
-        } catch (Exception ex) {
-            throw new IllegalArgumentException("Digite apenas números\n");
-        }
+        System.out.print("\nDigite o valor em reais (R$): ");
+        double entry = inputData.doubleEntry();
+        return BigDecimal.valueOf(entry);
     }
 
     private String retrieveCurrencyCodeForConvert() {
         InputData inputData = new KeyboardEntry();
-        try {
-            System.out.println("Digite a moeda de destino: \n 1 - Euro \n 2 - Dólar \n 3 - Peso Argentino \n 4 - Peso Chileno");
-            return inputData.textEntry();
-        } catch (Exception ex) {
-            throw new IllegalArgumentException("Verifique os dados digitados");
-        }
+        System.out.println("Digite a moeda de destino: \n 1 - Euro \n 2 - Dólar \n 3 - Peso Argentino \n 4 - Peso Chileno");
+        return inputData.textEntry();
     }
 
     private void printResultOfConvertion(Convertable converter, BigDecimal valueForConvert) {

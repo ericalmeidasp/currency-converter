@@ -11,16 +11,28 @@ public class KeyboardEntry implements InputData {
 
     @Override
     public String textEntry() {
-        return scanner.next();
+        try {
+            return scanner.nextLine();
+        } catch (Exception ex) {
+            throw new IllegalArgumentException("Texto inválido\n");
+        }
     }
 
     @Override
     public double doubleEntry() {
-        return scanner.nextDouble();
+        try {
+            return scanner.nextDouble();
+        } catch (Exception ex) {
+            throw new IllegalArgumentException("Digite apenas numeros\n");
+        }
     }
 
     public int intEntry() {
-        return scanner.nextInt();
+        try {
+            return scanner.nextInt();
+        } catch (Exception ex) {
+            throw new IllegalArgumentException("Digite apenas numeros inteiros\n");
+        }
     }
 
     public void close() {
