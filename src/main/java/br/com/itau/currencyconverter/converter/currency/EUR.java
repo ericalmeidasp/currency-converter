@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public final class EUR extends CurrencyWithIofTaxableAndOperationalTaxable {
     private final BigDecimal CONVERT_PRICE = new BigDecimal("0.20");
-    private final BigDecimal FIX_TAX = new BigDecimal("6.00");
+    private final BigDecimal FIX_FEE = new BigDecimal("6.00");
 
     @Override
     public BigDecimal doConvert(BigDecimal value) {
@@ -13,6 +13,6 @@ public final class EUR extends CurrencyWithIofTaxableAndOperationalTaxable {
 
     @Override
     public BigDecimal calculateOperationalTax(BigDecimal value) {
-        return FIX_TAX;
+        return FIX_FEE;
     }
 }

@@ -75,6 +75,4 @@ public class MainView {
             System.out.printf("%s%n%n", ex.getLocalizedMessage());
         }
     }
-
-
 }

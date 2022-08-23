@@ -11,15 +11,14 @@ public abstract class CurrencyWithIofTaxableAndOperationalTaxable implements Con
         BigDecimal valueOfIof = calculateIof(valueForConvert);
         BigDecimal valueOfOperationalTax = calculateOperationalTax(valueForConvert);
 
-        BigDecimal taxs = valueOfIof.add(valueOfOperationalTax);
+        BigDecimal totalTaxs = valueOfIof.add(valueOfOperationalTax);
 
-        if (isValid(valueForConvert, taxs)) {
+        if (isValid(valueForConvert, totalTaxs)) {
             BigDecimal valueAfterCalculateIof = valueForConvert.subtract(valueOfIof);
             BigDecimal valueAfterCalculateOperationalTax = valueAfterCalculateIof.subtract(valueOfOperationalTax);
-
             return doConvert(valueAfterCalculateOperationalTax).setScale(2, RoundingMode.DOWN);
-        }
-        throw new IllegalArgumentException("Não é possível converter, valor menor que as taxas incidentes.");
+        } else
+            throw new IllegalArgumentException("Não é possível converter, valor menor que as taxas incidentes.");
     }
 
     public abstract BigDecimal doConvert(BigDecimal value);
@@ -33,7 +32,7 @@ public abstract class CurrencyWithIofTaxableAndOperationalTaxable implements Con
     public abstract BigDecimal calculateOperationalTax(BigDecimal value);
 
     @Override
-    public boolean isValid(BigDecimal valueForConvert, BigDecimal taxs) {
-        return valueForConvert.compareTo(taxs) > 0;
+    public boolean isValid(BigDecimal valueForConvert, BigDecimal totalTaxs) {
+        return valueForConvert.compareTo(totalTaxs) > 0;
     }
 }
