@@ -32,7 +32,7 @@ public abstract class CurrencyWithIofTaxableAndOperationalTaxable implements Con
     public abstract BigDecimal calculateOperationalTax(BigDecimal value);
 
     @Override
-    public boolean isValid(BigDecimal valueForConvert, BigDecimal totalTaxs) {
-        return valueForConvert.compareTo(totalTaxs) > 0;
+    public boolean isValid(BigDecimal valueForConvert, BigDecimal totalTaxes) {
+        return valueForConvert.compareTo(totalTaxes) > 0;
     }
 }

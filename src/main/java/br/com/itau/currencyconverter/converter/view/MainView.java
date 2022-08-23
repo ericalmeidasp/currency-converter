@@ -1,5 +1,6 @@
 package br.com.itau.currencyconverter.converter.view;
 
+import br.com.itau.currencyconverter.converter.currency.Convertable;
 import br.com.itau.currencyconverter.converter.currency.CurrencyFactory;
 import br.com.itau.currencyconverter.converter.currency.CurrencyWithIofTaxableAndOperationalTaxable;
 import br.com.itau.currencyconverter.converter.utils.InputData;
@@ -41,22 +42,19 @@ public class MainView {
     }
 
     private void currencyMenuConverter() {
-        InputData inputData = new KeyboardEntry();
+
         BigDecimal valueForConvert;
+        String currencyCode;
 
         try {
-            System.out.print("\nDigite o valor em reais (R$): ");
-            double entry = inputData.doubleEntry();
-            valueForConvert = BigDecimal.valueOf(entry);
-        } catch (Exception ex) {
-            System.out.println("Digite apenas números\n");
+            valueForConvert = retrieveValueforConvert();
+            currencyCode = retrieveCurrencyCodeForConvert();
+        } catch (IllegalArgumentException ex) {
+            System.out.println(ex.getLocalizedMessage());
             return;
         }
 
-        System.out.println("Digite a moeda de destino: \n 1 - Euro \n 2 - Dólar \n 3 - Peso Argentino \n 4 - Peso Chileno");
-        String currencyCode = inputData.textEntry();
-
-        Optional<CurrencyWithIofTaxableAndOperationalTaxable> converter = new CurrencyFactory().create(currencyCode);
+        Optional<Convertable> converter = new CurrencyFactory().create(currencyCode);
 
         if (converter.isEmpty()) {
             System.out.println("Moeda não disponivel\n\n");
@@ -64,15 +62,42 @@ public class MainView {
         }
 
         try {
-            BigDecimal valueInFinalCurrency = converter.get().convert(valueForConvert);
-
-            System.out.printf("%nValor em reais:    R$ %.02f%n", valueForConvert);
-            System.out.printf("IOF:               R$ %.02f%n", converter.get().calculateIof(valueForConvert));
-            System.out.printf("Taxa de Operaçâo:  R$ %.02f%n", converter.get().calculateOperationalTax(valueForConvert));
-            System.out.println("---------------------------");
-            System.out.printf("Total Convertido:  %s %.02f%n%n", converter.get().getClass().getSimpleName(), valueInFinalCurrency);
+            printResultOfConvertion(converter.get(), valueForConvert);
         } catch (IllegalArgumentException ex) {
             System.out.printf("%s%n%n", ex.getLocalizedMessage());
         }
+    }
+
+    private BigDecimal retrieveValueforConvert() {
+        InputData inputData = new KeyboardEntry();
+        try {
+            System.out.print("\nDigite o valor em reais (R$): ");
+            double entry = inputData.doubleEntry();
+            return BigDecimal.valueOf(entry);
+        } catch (Exception ex) {
+            throw new IllegalArgumentException("Digite apenas números\n");
+        }
+    }
+
+    private String retrieveCurrencyCodeForConvert() {
+        InputData inputData = new KeyboardEntry();
+        try {
+            System.out.println("Digite a moeda de destino: \n 1 - Euro \n 2 - Dólar \n 3 - Peso Argentino \n 4 - Peso Chileno");
+            return inputData.textEntry();
+        } catch (Exception ex) {
+            throw new IllegalArgumentException("Verifique os dados digitados");
+        }
+    }
+
+    private void printResultOfConvertion(Convertable converter, BigDecimal valueForConvert) {
+        CurrencyWithIofTaxableAndOperationalTaxable converterCurrency = (CurrencyWithIofTaxableAndOperationalTaxable) converter;
+
+        BigDecimal valueInFinalCurrency = converterCurrency.convert(valueForConvert);
+
+        System.out.printf("%nValor em reais:    R$ %.02f%n", valueForConvert);
+        System.out.printf("IOF:               R$ %.02f%n", converterCurrency.calculateIof(valueForConvert));
+        System.out.printf("Taxa de Operaçâo:  R$ %.02f%n", converterCurrency.calculateOperationalTax(valueForConvert));
+        System.out.println("---------------------------");
+        System.out.printf("Total Convertido:  %s %.02f%n%n", converterCurrency.getClass().getSimpleName(), valueInFinalCurrency);
     }
 }

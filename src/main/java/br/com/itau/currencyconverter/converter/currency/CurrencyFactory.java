@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class CurrencyFactory {
-    private final Map<String, CurrencyWithIofTaxableAndOperationalTaxable> convertableMap;
+    private final Map<String, Convertable> convertableMap;
 
     public CurrencyFactory() {
         this.convertableMap = new HashMap<>();
@@ -15,7 +15,7 @@ public class CurrencyFactory {
         this.convertableMap.put("4", new CLP());
     }
 
-    public Optional<CurrencyWithIofTaxableAndOperationalTaxable> create(String currency) {
+    public Optional<Convertable> create(String currency) {
         return Optional.ofNullable(this.convertableMap.get(currency));
     }
 }
