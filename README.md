@@ -28,4 +28,8 @@ Depois, execute o arquivo jar através do terminal, dentro da pasta raiz.
 ```bash
   java -jar currency-converter.jar
 ```
+<<<<<<< HEAD
 E Boa sorte nas conversões :)
+=======
+E Boa sorte nas conversões :)
+>>>>>>> f2665d0 (refactor)
